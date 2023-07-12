@@ -51,6 +51,41 @@ public class OrderServiceTest {
 
     }
 
+    @Test(expected = NotEnoughStockException.class)
+    public void 상품주문_재고수량초과() {
+        //given
+        Member member = createMember();
+        Item item = createBook("시골 JPA", 10000, 10); //이름, 가격, 재고
+        int orderCount = 11; //재고보다 많은 수량
+
+        //when
+        Long orderId = orderService.order(member.getId(), item.getId(), orderCount);
+
+        //then
+        fail("재고 수량 부족 예외가 발생해야 한다.");
+    }
+
+    @Test
+    public void 주문취소() {
+        //given
+        Member member = createMember();
+        Item item = createBook("시골 JPA", 10000, 10); //이름, 가격, 재고
+        int orderCount = 2;
+
+        Long orderId = orderService.order(member.getId(), item.getId(), orderCount);
+
+        //when
+        orderService.cancelOrder(orderId);
+
+        //then
+        Order getOrder = orderRepository.findOne(orderId);
+        assertEquals("주문 취소시 상태는 CANCEL 이다.",OrderStatus.CANCEL,
+                getOrder.getStatus());
+        assertEquals("주문이 취소된 상품은 그만큼 재고가 증가해야 한다.", 10,
+                item.getStockQuantity());
+
+    }
+
     private Member createMember() {
         Member member = new Member();
         member.setName("회원1");
