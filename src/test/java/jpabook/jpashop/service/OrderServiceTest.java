@@ -84,8 +84,9 @@ public class OrderServiceTest {
         orderService.cancel(orderId);
 
         //then
-        Order one = orderRepository.findOne(orderId);
-        Assertions.assertEquals(OrderStatus.CANCEL, one.getOrderStatus());
+        Order cancelOrder = orderRepository.findOne(orderId);
+        Assertions.assertEquals(OrderStatus.CANCEL, cancelOrder.getOrderStatus());
+        Assertions.assertEquals(10, book.getStockQuantity());
     }
 
     @Test(expected = NotEnoughStockException.class)
