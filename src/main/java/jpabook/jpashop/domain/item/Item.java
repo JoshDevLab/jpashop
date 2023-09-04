@@ -39,7 +39,7 @@ public class Item {
     public void removeStock(int quantity) {
         int restStock = this.stockQuantity - quantity;
         if (restStock < 0) {
-            throw new NotEnoughStockException("재고 부족");
+            throw new NotEnoughStockException("재고 부족 입니다.");
         }
         this.stockQuantity = restStock;
     }
