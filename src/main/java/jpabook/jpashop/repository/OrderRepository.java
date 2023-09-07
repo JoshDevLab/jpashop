@@ -23,11 +23,9 @@ public class OrderRepository {
 
     public List<Order> findAll(OrderSearch orderSearch) {
 
-        return  em.createQuery("select o from Order o join o.member m" +
-                " where o.orderStatus = :orderStatus" +
-                " and m.name like :name", Order.class)
-                .setParameter("orderStatus", orderSearch.getOrderStatus())
-                .setParameter("name", orderSearch.getMemberName())
+        String jpql = "select o from Order o join o.member m";
+
+        return  em.createQuery(jpql, Order.class)
                 .setMaxResults(1000) //최대 1000건
                 .getResultList();
 
