@@ -30,4 +30,10 @@ public class OrderRepository {
                 .getResultList();
 
     }
+
+    public List<Order> findAllWithMemberDelivery() {
+        List resultList = em.createQuery("select o from Order o join fetch o.member m join fetch o.delivery d")
+                .getResultList();
+        return resultList;
+    }
 }
